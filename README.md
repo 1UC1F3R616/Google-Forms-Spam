@@ -6,6 +6,10 @@ MultiThreaded spamer, 100% working | Consumes Data because of too high speed | Y
 - I haven't improved it or upgrade for user convinience becuase it's very basic to use, ready to use in 1 minute
 - Again, It works for any google form that don't have Gmail Verification. With any type of params in form :)
 
+## Some Helpful Libs
+- fastProxy: get proxy on go
+- faker: generate fake details on go
+
 </br></br>
 -Below is what happened on running for 1 minute :) Started getting port error 
 
