@@ -5,6 +5,7 @@ MultiThreaded spamer, 100% working | Consumes Data because of too high speed | Y
 - This method works even if you are uploading an image or whatever... It simply works
 - I haven't improved it or upgrade for user convinience becuase it's very basic to use, ready to use in 1 minute
 - Again, It works for any google form that don't have Gmail Verification. With any type of params in form :)
+- Use Network tab to get the required parameters we need to fill in the script, If that's a low level hack for you then Intercept with Burp to get the required parameters
 
 ## Some Helpful Libs
 - fastProxy: get proxy on go
