@@ -11,6 +11,12 @@ MultiThreaded spamer, 100% working | Consumes Data because of too high speed | Y
 - fastProxy: get proxy on go
 - faker: generate fake details on go
 
+# Some tips on faker:
+- import faker by ```pip install faker```
+- Read the documentation to find what fields you need
+- When you are sending those name etc at there replace them with the variables and in those variables pass this faker content
+- See their in data, in that fill some values and then see where they are, Replace them accordingly.
+  
 </br></br>
 -Below is what happened on running for 1 minute :) Started getting port error 
 
