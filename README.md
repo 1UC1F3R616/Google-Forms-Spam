@@ -11,7 +11,7 @@ MultiThreaded spamer, 100% working | Consumes Data because of too high speed | Y
 - fastProxy: get proxy on go
 - faker: generate fake details on go
 
-# Some tips on faker:
+### Some tips on faker:
 - import faker by ```pip install faker```
 - Read the documentation to find what fields you need
 - When you are sending those name etc at there replace them with the variables and in those variables pass this faker content
