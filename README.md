@@ -1,6 +1,8 @@
 # Google-Forms-Spam
 MultiThreaded spamer, 100% working | Consumes Data because of too high speed | You can decrease speed but I don't think that's what we want :)
 
+- [Complete Tutorial Video](https://drive.google.com/file/d/179iQSYu4lPIUbl85ba_bGpAXcMT79BYA/view)
+
 - [Get Proxy From here, Use Import Method to get easy pessy list](https://github.com/1UC1F3R616/fastProxy/blob/master/getProxyNow.py)
 - This method works even if you are uploading an image or whatever... It simply works
 - I haven't improved it or upgrade for user convinience becuase it's very basic to use, ready to use in 1 minute
