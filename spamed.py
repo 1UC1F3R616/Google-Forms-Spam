@@ -1,26 +1,35 @@
-import requests
+# internal imports
 import time
-import threading
 import random
+from concurrent.futures import ThreadPoolExecutor, as_completed
+
+# external imports
+import requests
+
 
 """
-Change This fields and Your are set to Rock! (Script works, but you may have difficulty finding correct details, only 4 needed. Make an issue, I will help.)
-url: your form url # URL must be response URL, sample is provided
-Referer: Take by Filling a response
-Cookie: Take by filling a response
+Change 4 Fields (Compulspory) | 3 Fields are optional | Sample Video on where and how to find them is available in Readme.
+
+URL: your form url # URL must be response URL, sample is provided
+REFERER: Take by Filling a response
+COOKIE: Take by filling a response
 DATA: Fill a form and find it :)
-proxys: fresh proxys (Use fastProxy library from PyPi... made my me :))
+
+PROXYS: You can provide proxies also.
+MAX_WORKERS: Change this value to increase the speed of spam. Don't go beyond 500.
+SPAM_COUNT: Change this to increase spam count
 """
 
+MAX_WORKERS = 63 # Change this value to increase the speed of spam. Don't go beyond 500.
+SPAM_COUNT = 100000 # Change this to increase spam count
 
-URL = 'https://docs.google.com/forms/d/e/1FAIpQLScV70rqvGjDwLnPUJ-YdMNF0I_gVTXpT0_hLtVRL_yLb4ljBA/formResponse'
-#'https://docs.google.com/forms/d/e/1FAIpQLScV70rqvGjDwLnPUJ-YdMNF0I_gVTXpT0_hLtVRL_yLb4ljBA/formResponse'
-DATA = 'entry.1893802898_sentinel=&entry.1893802898=Option+1&entry.1893802898=Option+3&entry.1436081212=Option+2&entry.2046702074=short+answer+goes+here&fvv=1&draftResponse=%5Bnull%2Cnull%2C%22-5913095039686218102%22%5D%0D%0A&pageHistory=0&fbzx=-5913095039686218102'
-#'entry.2046702074=answer2&fvv=1&draftResponse=%5Bnull%2Cnull%2C%22700526258680781707%22%5D%0D%0A&pageHistory=0&fbzx=700526258680781707'
-REFERER = 'https://docs.google.com/forms/d/e/1FAIpQLScV70rqvGjDwLnPUJ-YdMNF0I_gVTXpT0_hLtVRL_yLb4ljBA/viewform?fbzx=-5913095039686218102'
-#'https://docs.google.com/forms/d/e/1FAIpQLScV70rqvGjDwLnPUJ-YdMNF0I_gVTXpT0_hLtVRL_yLb4ljBA/viewform?fbzx=700526258680781707'
-COOKIE ='S=spreadsheet_forms=BXegCHIeTgQU35TMDuO3W3FH3gtwNp9-iSHEQzpAbBk; NID=204=0FF1LfU_6hGdFzv1hsouk65EaU5Be-thZaJpwAIsXsCRMdSoVc7AY_7zicFPrJGdz7bv4Z9ootULJZSaTs91yy4-qAsqVNUEbLCHGR14rIP2hzfnPUIvaXftvt8N1d-AbZY8ZoZSyGB5uTeursGLP7tjGwVUdd_oJcuvFikuzfw'
-#'S=spreadsheet_forms=BXegCHIeTgQU35TMDuO3W3FH3gtwNp9-iSHEQzpAbBk; NID=204=ecClXfGHi-YRCDrpb8AbnBtxNexVQUE-ypUTe-fnrRz27zOesoZ0rWzdVxibZn9Ous_oekVOdLsLmsHMWCJwfmJEZkbfXPugn-wZgzhWjgC_trelE25Dt7hZ4lsgadBy6SJEhwbC_FD-6i_ckwpgBzFjsSacjA0pUpoE8lNtfu8; 1P_JAR=2020-05-23-16'
+URL = 'https://docs.google.com/forms/d/e/1FAIpQLSfoemQg90qTmA4ps9yh-YU46_9xDcMzBILr-wSnPpyXVr9BLA/formResponse'
+
+DATA = 'entry.2005620554=kushal&entry.1045781291=kushal%40gmail.com&entry.1166974658=1234567890&fvv=1&partialResponse=%5Bnull%2Cnull%2C%224688203165610129769%22%5D&pageHistory=0&fbzx=4688203165610129769'
+
+REFERER = 'https://docs.google.com/forms/d/e/1FAIpQLSfoemQg90qTmA4ps9yh-YU46_9xDcMzBILr-wSnPpyXVr9BLA/viewform?fbzx=4688203165610129769'
+
+COOKIE = 'S=spreadsheet_forms=_MWW_iXuve4ymMWEWsadrXL3MQ9E2nZslrqG0IpKaOI; NID=511=r7jrQT0RP2pXBPytn9JdONT8-Ji7XGUoITz5bgqxO0oDdIRIIKUm2t9qU7u-ddviv-HnYzCf6ePo5I24kVq8ivmRbgThX-Bn5JQHwSSYGzmI5BwaVErPulCdnkiwF7cUOlXBtBHuKMtaYE-SRAWQ7IV80t0oi-hHubIQYcX1bbY'
 
 
 HEADER = {
@@ -34,24 +43,33 @@ HEADER = {
     'Upgrade-Insecure-Requests':'1'
     }
 
-
-proxys = ['144.217.101.242:3129', '192.41.71.204:3128', '192.41.13.71:3128', '104.154.143.77:3128', '205.126.14.166:8009', \
-           '205.126.14.170:8009', '205.126.14.171:8009', '163.172.189.32:8811', '134.122.67.188:3128', '51.158.180.179:8811', \
-           '163.172.136.226:8811', '80.187.140.26:8080', '205.126.14.167:8009', '51.158.107.202:8811', '51.158.78.179:8811', \
-           '163.172.146.119:8811', '51.158.68.26:8811', '188.165.16.230:3129', '51.158.186.242:8811', '95.179.200.239:30963', \
-           '139.180.184.204:3128', '91.202.240.208:51678', '81.16.10.141:38132', '82.200.233.4:3128', '202.40.177.69:80', \
-           '139.162.47.109:143', '91.230.227.168:3128', '51.158.123.35:8811', '103.81.114.182:53281']
+# After 4.8K+ requests google will ask you to fill a captcha if you are not using proxy.
+PROXYS = []
+# PROXYS = ['144.217.101.242:3129', '192.41.71.204:3128', '192.41.13.71:3128', '104.154.143.77:3128']
 
 
 
 
 def trouble():
     try:
-        proxy = proxys[random.choice([x for x in range(len(proxys))])]
-        r = requests.post(URL, proxies={'http':proxy, 'https':proxy}, data=DATA, headers=HEADER)
-        print(r.status_code)
+        if len(PROXYS) > 0: # Proxies are passed
+            proxy = PROXYS[random.choice([x for x in range(len(PROXYS))])]
+            r = requests.post(URL, proxies={'http':proxy, 'https':proxy}, data=DATA, headers=HEADER)
+        else:
+            r = requests.post(URL, data=DATA, headers=HEADER)
+        return r
     except Exception as e:
-        print(str(e))
+        raise Exception (e)
 
-while True:
-    threading.Thread(target=trouble).start()
+
+if __name__ == "__main__":
+
+    with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
+        future_calls = {executor.submit(trouble): count for count in range(SPAM_COUNT)}
+
+        for future in as_completed(future_calls):
+            try:
+                result = future.result()
+                print('[-] {}'.format(result.status_code))
+            except Exception as e:
+                print('[!] {}'.format(e))
